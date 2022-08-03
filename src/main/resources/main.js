@@ -1,4 +1,4 @@
-var nodeLib = require('/lib/xp/node');
+/*var nodeLib = require('/lib/xp/node');
 
 //var TARGET_ID = "58b48a7d-9ac5-4f37-b3a5-0dd1629fff88"        // <-- Actual target on AS prod
 var TARGET_ID = "bce9cf17-0894-46a4-be23-95cbf2dc8992"          // <-- Exists in my local repo
@@ -24,7 +24,7 @@ try {
 
 } catch (e) {
     log.error(e);
-}
+}*/
 
 
 // var adminToolsBean = __.newBean(

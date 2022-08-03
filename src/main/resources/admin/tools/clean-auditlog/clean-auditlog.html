@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Auditlog Cleaner</title>
+        <style>
+            * {
+                padding: 15px
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Auditlog Cleaner</h1>
+
+        <div data-th-unless="${started}">
+            <form action="" data-th-action="${myUrl}" method="post">
+                <input type="submit" name="start" value="Start" />
+            </form>
+        </div>
+
+        <div data-th-if="${started}">Running... Check server log for progress.</div>
+
+    </body>
+</html>

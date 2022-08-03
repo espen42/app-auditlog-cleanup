@@ -1,0 +1,7 @@
+<tool>
+    <display-name>Auditlog Cleaner</display-name>
+    <description>Same as CLI, but pluggable</description>
+    <allow>
+        <principal>role:system.admin</principal>
+    </allow>
+</tool>

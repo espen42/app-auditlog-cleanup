@@ -46,25 +46,34 @@ public class CleanUpHandler
         long hits = nodesToDelete.getHits();
         final long totalHits = nodesToDelete.getTotalHits();
 
+
         if ( totalHits == 0 )
         {
+            LOG.info( "No auditlog entries to clean.");
             return CleanUpAuditLogResult.empty();
         }
 
+        LOG.info( String.format( "Cleaning %d auditlog entries...", totalHits));
+
 //        listener.start( BATCH_SIZE );
 
+        int hitCount = 0;
         while ( hits > 0 )
         {
             for ( NodeHit nodeHit : nodesToDelete.getNodeHits() )
             {
-                try
-                {
-                    result.deleted( nodeService.deleteById( nodeHit.getNodeId() ).getSize() );
+                if (hitCount%100 == 0) {
+                    LOG.info( String.format( "Cleaning auditlog: %d / %d", hitCount, totalHits));
                 }
-                catch ( Exception e )
-                {
+
+                try {
+                    result.deleted( nodeService.deleteById( nodeHit.getNodeId() ).getSize() );
+
+                } catch ( Exception e ) {
                     LOG.error( String.format( "Can't remove node - %s", nodeHit.getNodeId() ) );
                 }
+
+                hitCount++;
 
 //                listener.processed();
             }
@@ -75,6 +84,8 @@ public class CleanUpHandler
         }
 
 //        listener.finished();
+
+        LOG.info("Auditlog cleanups is done.");
 
         return result.build();
     }
