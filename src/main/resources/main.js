@@ -27,3 +27,9 @@ try {
 }
 
 
+// var adminToolsBean = __.newBean(
+//     'handler.CleanUpHandler'
+// );
+//
+// adminToolsBean.run('2014-09-25T10:00:00.00Z');
+
