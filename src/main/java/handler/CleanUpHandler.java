@@ -92,7 +92,7 @@ public class CleanUpHandler
                 }
                 catch ( Exception e )
                 {
-                    LOG.error( String.format( "Can't remove node - %s", nodeHit.getNodeId() ) );
+                    LOG.error( String.format( "Can't remove node - %s", nodeHit.getNodeId() ), e );
                 }
 
                 hitCount++;
