@@ -35,10 +35,13 @@ public class CleanUpHandler
     public CleanUpAuditLogResult run( final String until )
     {
         this.until = Instant.parse( until );
+        LOG.info("Until: " + this.until);
 
         final CleanUpAuditLogResult.Builder result = CleanUpAuditLogResult.create();
 
         final NodeQuery query = createQuery();
+
+        LOG.info("query: " + query);
 
         nodeService.refresh( RefreshMode.ALL );
         FindNodesByQueryResult nodesToDelete = nodeService.findByQuery( query );
@@ -92,6 +95,11 @@ public class CleanUpHandler
 
     private NodeQuery createQuery()
     {
+        LOG.info("AuditLogConstants time: " + AuditLogConstants.TIME.toString() );
+        LOG.info("NodeIndexPath nodetype: " + NodeIndexPath.NODE_TYPE.toString() );
+        LOG.info("AuditLogConstants nodetype: " + AuditLogConstants.NODE_TYPE.toString() );
+        LOG.info("AuditLogConstants nodetype value: " + ValueFactory.newString( AuditLogConstants.NODE_TYPE.toString() ));
+
         final NodeQuery.Builder builder = NodeQuery.create()
             .addQueryFilter( ValueFilter.create()
                                  .fieldName( NodeIndexPath.NODE_TYPE.toString() )

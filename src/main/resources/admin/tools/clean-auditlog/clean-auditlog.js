@@ -18,7 +18,7 @@ exports.post = function (req) {
      'handler.CleanUpHandler'
     );
 
-    adminToolsBean.run('2022-07-03T00:00:00.00Z');
+    adminToolsBean.run('2022-08-03T01:00:01.01Z');
 
     return {
         body: thymeleaf.render(view, {
