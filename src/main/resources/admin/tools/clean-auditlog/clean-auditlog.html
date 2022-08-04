@@ -1,9 +1,36 @@
 <html>
     <head>
+        <meta charset = "utf-8">
         <title>Auditlog Cleaner</title>
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+        <script>
+            $(function() {
+                $( "#datepicker-13" ).datepicker({
+                    defaultDate: new Date(new Date()-(30*24*3600*1000)),
+                    dateFormat: "dd/mm/yy",
+                    onSelect: function(dateText, inst) {
+                        var ddmmyy = dateText.split("/")
+                        var dd = /* parseInt( */ ddmmyy[0] /*, 10)*/  ;
+                        var mm = /* parseInt( */ ddmmyy[1] /*, 10)*/ ;
+                        var yy = parseInt(ddmmyy[2], 10)
+                        if (yy < 1000) { yy += 2000 }
+
+                        document.getElementById("until").value = yy + "-" + mm + "-" + dd + "T23:59:59.999Z";
+                        document.getElementById("startbutton").disabled = false;
+                    }
+                });
+                $( "#datepicker-13" ).datepicker("show");
+            });
+        </script>
+
         <style>
-            * {
-                padding: 15px
+            #startbutton, body {
+                padding: 15px;
             }
         </style>
     </head>
@@ -13,7 +40,9 @@
 
         <div data-th-unless="${started}">
             <form action="" data-th-action="${myUrl}" method="post">
-                <input type="submit" name="start" value="Start" />
+                <p>Remove auditlog entries OLDER THAN (protect this date and earlier): <input type = "text" id = "datepicker-13"></p>
+                <input type="hidden" id="until" name="until" value="">
+                <input disabled type="submit" name="start" id="startbutton" value="Start" />
             </form>
         </div>
 

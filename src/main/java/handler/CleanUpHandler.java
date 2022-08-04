@@ -27,6 +27,7 @@ import com.enonic.xp.security.PrincipalKey;
 import com.enonic.xp.security.RoleKeys;
 import com.enonic.xp.security.User;
 import com.enonic.xp.security.auth.AuthenticationInfo;
+import java.lang.Math;
 
 public class CleanUpHandler
     implements ScriptBean
@@ -52,13 +53,11 @@ public class CleanUpHandler
     private CleanUpAuditLogResult doRun( final String until )
     {
         this.until = Instant.parse( until );
-        LOG.info( "Until: " + this.until );
+        LOG.info( "Cleaning auditlog. Protect until: " + this.until );
 
         final CleanUpAuditLogResult.Builder result = CleanUpAuditLogResult.create();
 
         final NodeQuery query = createQuery();
-
-        LOG.info( "query: " + query );
 
         nodeService.refresh( RefreshMode.ALL );
         FindNodesByQueryResult nodesToDelete = nodeService.findByQuery( query );
@@ -81,9 +80,9 @@ public class CleanUpHandler
         {
             for ( NodeHit nodeHit : nodesToDelete.getNodeHits() )
             {
-                if ( hitCount % 100 == 0 )
+                if ( hitCount % 1000 == 0 )
                 {
-                    LOG.info( String.format( "Cleaning auditlog: %d / %d", hitCount, totalHits ) );
+                    LOG.info( String.format( "Cleaning auditlogs: %d - %d of total %d", hitCount, Math.min(hitCount+999, totalHits), totalHits ) );
                 }
 
                 try
@@ -115,11 +114,6 @@ public class CleanUpHandler
 
     private NodeQuery createQuery()
     {
-        LOG.info( "AuditLogConstants time: " + AuditLogConstants.TIME.toString() );
-        LOG.info( "NodeIndexPath nodetype: " + NodeIndexPath.NODE_TYPE.toString() );
-        LOG.info( "AuditLogConstants nodetype: " + AuditLogConstants.NODE_TYPE.toString() );
-        LOG.info( "AuditLogConstants nodetype value: " + ValueFactory.newString( AuditLogConstants.NODE_TYPE.toString() ) );
-
         final NodeQuery.Builder builder = NodeQuery.create()
             .addQueryFilter( ValueFilter.create()
                                  .fieldName( NodeIndexPath.NODE_TYPE.toString() )

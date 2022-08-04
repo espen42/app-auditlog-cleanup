@@ -14,11 +14,8 @@ exports.get = function (req) {
 };
 
 exports.post = function (req) {
-    var adminToolsBean = __.newBean(
-     'handler.CleanUpHandler'
-    );
-
-    adminToolsBean.run('2022-08-03T01:00:01.01Z');
+    var adminToolsBean = __.newBean('handler.CleanUpHandler');
+    adminToolsBean.run(req.params.until);
 
     return {
         body: thymeleaf.render(view, {
